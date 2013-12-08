@@ -1,18 +1,23 @@
 ;mirc script 7.32
-;text to time v0.0002
+;text to time v0.0003
+;0.x3 fix подсчёта часов
 ;подсчитывает время формата ч:мм:сс, в общее время формата дд:чч:мм:сс
 
 on *:INPUT:#:{
-  %c = #test123
-  %work = 1
-  if (%work) {
+  %ct = #test123
+  %work1 = 1
+  if (%work1) {
     if ($1 != $null) { 
       %secw = $calc($right($1,2) + %secw)
       if ($left($1,3) isnum) { %min = $left($1,3) } | elseif ($left($right($1,5),2) isnum) { %min = $left($right($1,5),2) } | else { %min = $left($right($1,5),1) }
-      if ($left($right($1,7),1) isnum) { %hr = $left($right($1,7),1) }
+      if ($len($1) > 5) { 
+        if ($left($right($1,7),1) isnum) { %hr = $left($right($1,7),1) }
+      }
+      else { %hr = 0 }
       %minw = $calc((60 * %min) + %minw))
       %hrw = $calc(((60 * %hr) * 60) + %hrw)
-      echo %c time = $asctime($calc($asctime(%secw,ss) + %hrw + ($asctime(%secw,nn) * 60) + (%minw - (((60 * 60) * 24) + ((60 * 60) * 11)))),dd:HH:nn:ss)
+      echo %ct $asctime(0,dd:hh:nn:ss)
+      echo %ct time = $asctime($calc($asctime(%secw,ss) + %hrw + ($asctime(%secw,nn) * 60) + (%minw - (((60 * 60) * 24) + ((60 * 60) * 11)))),dd:HH:nn:ss)
     }
     if ($1 == !q) { 
       %secw = 0
